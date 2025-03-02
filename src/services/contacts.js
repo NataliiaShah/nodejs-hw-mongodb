@@ -3,6 +3,7 @@ import User from "../db/models/contacts.js";
 export const getAllContacts = async () => {
   try {
     const contacts = await User.find();
+    console.log(contacts.length);
     if (contacts.length === 0) {
       console.log('No contacts found!');
     }
