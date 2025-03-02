@@ -1,9 +1,21 @@
-import dotenv from "dotenv";
 import mongoose from "mongoose";
+import { getEnvVar } from "../utils/getEnvVar.js";
 
-dotenv.config();
-const DB_URL = process.env.MONGODB_URL;
+export const initMongoConnection = async () => {
+    try {
+        const user = getEnvVar('MONGODB_USER');
+        const pwd = getEnvVar('MONGODB_PASSWORD');
+        //const url = getEnvVar('MONGODB_URL');
+        const db = getEnvVar('MONGODB_DB');
 
-export function initMongoConnection() {
-    return mongoose.connect(DB_URL);
-}
+        await mongoose.connect(
+            `mongodb+srv://${user}:${pwd}@users.y70ir.mongodb.net/${db}?retryWrites=true&w=majority&appName=Users`,
+        );
+        console.log('Mongo connection successfully established!');
+    } catch (error) {
+    console.log(error);
+    console.log('Internal Server Error');
+  }
+};
+
+
