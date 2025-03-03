@@ -1,19 +1,15 @@
-import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import pino from 'pino';
+import { getEnvVar } from './utils/getEnvVar.js';
 import { initMongoConnection } from './db/initMongoConnection.js';
 import { getAllContacts, getContactById } from './services/contacts.js';
 
-dotenv.config();
-
 const logger = pino();
 const app = express();
-const port = process.env.PORT || 3000;
+const port = getEnvVar('PORT');
 
 app.use(cors());
-//app.use(express.json());
-
 
 export async function setupServer() {
   try {
