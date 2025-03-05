@@ -3,11 +3,13 @@ import { getContactsController, getContactByIdController } from "../controllers/
 
 const router = Router();
 
-router.get('/contacts', getContactsController);
-router.get('/contacts/:contactId', getContactByIdController);
+// Маршрут для отримання всіх контактів
+router.get('/', getContactsController);
+
+// Маршрут для отримання контакту за ID
+router.get('/:contactId', getContactByIdController);
 
 export default router;
-
 
 
 
