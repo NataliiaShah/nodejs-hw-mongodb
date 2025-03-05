@@ -3,7 +3,8 @@ import cors from 'cors';
 import pino from 'pino';
 import { getEnvVar } from './utils/getEnvVar.js';
 import { initMongoConnection } from './db/initMongoConnection.js';
-import { getAllContacts, getContactById } from './services/contacts.js';
+import contactsRouter from './routers/contacts.js';
+import router from './routers/contacts.js';
 
 const logger = pino();
 const app = express();
@@ -24,55 +25,7 @@ export async function setupServer() {
       res.send({ message: "Server is running" });
     });
 
-
-    app.get('/contacts', async (req, res) => {
-      try {
-        const contacts = await getAllContacts();
-        res.status(200).json({
-          status: 200,
-          message: 'Successfully found contacts',
-          data: contacts,
-        });
-      } catch (err) {
-        logger.error('Error fetching contacts:', err);
-        res.status(500).json({
-          status: 500,
-          message: 'Something went wrong while fetching contacts',
-          error: err.message,
-        });
-      }
-    });
-
-
-    app.get('/contacts/:contactId', async (req, res) => {
-      try {
-        const { contactId } = req.params;
-        logger.info(`Received contactId: ${contactId}`);
-
-        const contact = await getContactById(contactId);
-
-        if (!contact) {
-          return res.status(404).json({
-            status: 404,
-            message: `Contact with id ${contactId} not found`,
-          });
-        }
-
-        res.status(200).json({
-          status: 200,
-          message: `Successfully found contact with id ${contactId}`,
-          data: contact,
-        });
-      } catch (error) {
-        logger.error(error);
-        res.status(500).json({
-          status: 500,
-          message: 'Something went wrong while fetching the contact',
-          error: error.message,
-        });
-      }
-    });
-
+    app.use('/contacts' ,contactsRouter);
 
     app.get('*', (req, res) => {
       res.status(404).json({
@@ -81,12 +34,11 @@ export async function setupServer() {
       });
     });
 
-
     app.use((err, req, res, next) => {
       logger.error(err);
       res.status(500).json({
         status: 500,
-        message: 'Something went wrong',
+        message: 'Something went wrong while fetching the contact',
         error: err.message,
       });
     });
@@ -99,5 +51,7 @@ export async function setupServer() {
     logger.error('Error starting server:', error);
   }
 };
+
+export default router;
 
 
