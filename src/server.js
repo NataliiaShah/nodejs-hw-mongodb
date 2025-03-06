@@ -1,61 +1,43 @@
 import express from 'express';
 import cors from 'cors';
-import pino from 'pino';
+import pino from 'pino-http';
 import { getEnvVar } from './utils/getEnvVar.js';
 import { initMongoConnection } from './db/initMongoConnection.js';
-import contactsRouter from './routers/contacts.js';  // Потрібно використовувати тільки це
+import contactsRouter from './routers/contacts.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
-const logger = pino();
-const app = express();
-const port = getEnvVar('PORT');
+const port = Number(getEnvVar('PORT', 3000));
 
-// Підключення CORS
-app.use(cors());
-
-// Підключення middleware для логування
-app.use((req, res, next) => {
-    logger.info(`Request made to ${req.originalUrl}`);
-    next();
-});
-
-// Головний маршрут
-app.get("/", (req, res) => {
-    res.send({ message: "Server is running" });
-});
-
-// Підключення маршрутів для контактів
-app.use('/contacts', contactsRouter);
-
-// Обробка 404 помилки
-app.get('*', (req, res) => {
-    res.status(404).json({
-        status: 404,
-        message: 'Not Found',
-    });
-});
-
-// Обробка помилок
-app.use((err, req, res, next) => {
-    logger.error(err);
-    res.status(500).json({
-        status: 500,
-        message: 'Something went wrong while fetching the contact',
-        error: err.message,
-    });
-});
-
-// Підключення до MongoDB та запуск сервера
 export async function setupServer() {
-    try {
-        await initMongoConnection();
-        app.listen(port, () => {
-            console.log(`Server is running on port ${port}`);
-        });
-    } catch (error) {
-        logger.error('Error starting server:', error);
-    }
-}
+  await initMongoConnection();
+
+  const app = express();
+  app.use(express.json());
+  app.use(cors());
+
+  app.use(
+    pino({
+      transport: {
+        target: 'pino-pretty',
+      },
+    }),
+  );
+
+  app.get("/", (req, res) => {
+    res.send({ message: "Server is running" });
+  });
+
+  app.use('/contacts', contactsRouter);
+
+  app.get('*', notFoundHandler);
 
 
+  app.use(errorHandler);
+
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+};
 
 
