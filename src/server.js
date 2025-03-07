@@ -30,7 +30,7 @@ export async function setupServer() {
 
   app.use('/contacts', contactsRouter);
 
-  app.get('*', notFoundHandler);
+  app.use('*', notFoundHandler);
 
 
   app.use(errorHandler);
