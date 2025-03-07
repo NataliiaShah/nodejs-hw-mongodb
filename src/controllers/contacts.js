@@ -46,8 +46,7 @@ export const patchContactController = async (req, res, next) => {
   const updatedContact = await updateContact(contactId, req.body);
 
   if (!updatedContact) {
-    next(createHttpError(404, 'Not found'));
-    return;
+    throw (createHttpError(404, 'Not found'));
   }
   res.json({
     status: 200,
@@ -61,8 +60,8 @@ export const deleteContactController = async (req, res, next) => {
   const contact = await deleteContact(contactId);
 
   if (!contact) {
-    next(createHttpError(404, 'Not found'));
-    return;
+    throw (createHttpError(404, 'Not found'));
+
   }
 
   res.status(204).send();
