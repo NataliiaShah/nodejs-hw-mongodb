@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
  const contactSchema = Joi.object({
-  name: Joi.string().min(3).max(20),
+   name: Joi.string().min(3).max(20),
   phoneNumber: Joi.number().min(3).max(20),
   email: Joi.string().email(),
   isFavourite: Joi.boolean(),
