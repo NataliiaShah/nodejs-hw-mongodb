@@ -1,16 +1,38 @@
 import Joi from 'joi';
 
- const contactSchema = Joi.object({
-  name: Joi.string().min(3).max(20),
-  phoneNumber: Joi.string().min(3).max(20),
-  email: Joi.string().email(),
-  isFavourite: Joi.boolean(),
-  contactType: Joi.string().valid('work', 'home', 'personal'),
+export const createValidationShema = Joi.object({
+  name: Joi.string().min(3).max(20).required().messages({
+    'string.base': 'Name should be a string',
+    'string.min': 'Name should have at least {#limit} characters',
+    'string.max': 'Name should have at most {#limit} characters',
+    'any.required': 'Name is required',
+  }),
+  phoneNumber: Joi.string()
+    .pattern(/^\+380\d{9}$/)
+    .required()
+    .messages({
+      'string.pattern.base':
+        'Phone number must be a valid international number (e.g., +123456789067).',
+      'any.required': 'Phone number is required.',
+    }),
+  email: Joi.string().email().messages({
+    'string.email': 'Invalid email format.',
+  }),
+  isFavourite: Joi.boolean().default(false),
+  contactType: Joi.string()
+    .min(3)
+    .max(20)
+    .valid('work', 'home', 'personal')
+    .default('personal')
+    .required(),
+  userId: Joi.string(),
 });
 
-export const createValidationShema = contactSchema.fork(
-  ['name', 'phoneNumber', 'contactType'],
-  (field) => field.required(),
-);
-
-export const updateValidationShema = contactSchema;
+export const updateValidationShema = Joi.object({
+  name: Joi.string().min(3).max(20),
+  phoneNumber: Joi.string().pattern(/^\+380\d{9}$/),
+  email: Joi.string().email(),
+  isFavourite: Joi.boolean(),
+  contactType: Joi.string().min(3).max(20).valid('work', 'home', 'personal'),
+  userId: Joi.string(),
+});
