@@ -26,6 +26,11 @@ const contactsSchema = new mongoose.Schema({
         enum: ["work", "home", "personal"],
         default: "personal",
     },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
 },
     {
     timestamps: true,
@@ -33,6 +38,6 @@ const contactsSchema = new mongoose.Schema({
   },
 );
 
-const User = mongoose.model("contacts", contactsSchema);
+const Contact = mongoose.model("contacts", contactsSchema);
 
-export default User;
+export default Contact;
