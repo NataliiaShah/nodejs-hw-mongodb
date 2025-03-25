@@ -1,7 +1,10 @@
 import createHttpError from 'http-errors';
 import { parsePaginationParams } from "../utils/parsePaginationParams.js";
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+import { getEnvVar } from '../utils/getEnvVar.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { saveFileToUploadDir } from '../utils/ saveFileToUploadDir.js';
 import {
     getAllContacts,
     getContactById,
@@ -9,7 +12,6 @@ import {
     updateContact,
     deleteContact
 } from '../services/contacts.js';
-
 
 export const getContactsController = async (req, res,) => {
 
@@ -62,21 +64,6 @@ export const createContactController = async (req, res) => {
   });
 };
 
-export const patchContactController = async (req, res, next) => {
-  const { contactId } = req.params;
-  const userId = req.user._id;
-  const updatedContact = await updateContact(contactId, req.body, userId);
-
-  if (!updatedContact) {
-    throw (createHttpError(404, `Contact with id: ${contactId} not found`));
-  }
-  res.json({
-    status: 200,
-    message: 'Successfully update contact',
-    data: updatedContact,
-  });
-};
-
 export const deleteContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const userId = req.user._id;
@@ -88,6 +75,37 @@ export const deleteContactController = async (req, res, next) => {
   }
 
   res.status(204).send();
+};
+
+export const patchContactController = async (req, res, next) => {
+  const { contactId } = req.params;
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    if (getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  const result = await updateContact(contactId, {
+    ...req.body,
+    photo: photoUrl,
+  });
+
+  if (!result) {
+    next(createHttpError(404, 'Contact not found'));
+    return;
+  }
+
+  res.json({
+    status: 200,
+    message: `Successfully patched a contact!`,
+    data: result.student,
+  });
 };
 
 
