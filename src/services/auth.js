@@ -161,6 +161,3 @@ export const resetPassword = async (payload) => {
   );
 };
 
-
-
-
