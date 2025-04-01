@@ -5,7 +5,6 @@ import { TEMP_UPLOAD_DIR, UPLOAD_DIR } from './constants/index.js';
 
 
 const boostrap = async () => {
-
     await initMongoConnection();
     await createDirIfNotExists(TEMP_UPLOAD_DIR);
     await createDirIfNotExists(UPLOAD_DIR);
@@ -13,3 +12,5 @@ const boostrap = async () => {
 };
 
 boostrap();
+
+

@@ -18,5 +18,3 @@ export const initMongoConnection = async () => {
     console.log('Internal Server Error');
   }
 };
-
-
