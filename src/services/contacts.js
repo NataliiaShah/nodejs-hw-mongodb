@@ -44,33 +44,29 @@ export const getAllContacts = async ({
 
 };
 
-export const getContactById = async (contactId, userId) => {
-  return await Contact.findOne({ _id: contactId, userId });
+export const getContactById = async ({ _id, userId }) => {
+  return await Contact.findOne({ _id, userId });
 };
 
-export const createContact = async (payload, userId) => {
-  const contact = new Contact({
-    ...payload,
-    userId,
-  });
-    return await contact.save();
-
+export const createContact = async (payload) => {
+  return await Contact.create(payload);
 };
 
-export const updateContact = async (contactId, payload, userId) => {
-  const contact = await Contact.findOneAndUpdate({
-    _id: contactId, userId },
-    payload,
+export const updateContact = async (conditions, payload) => {
+  const rawResult = await Contact.findOneAndUpdate(
+    conditions,
+    { $set: payload },
     { new: true },
   );
-  if (!contact) return null;
+  if (!rawResult) return null;
 
-  return contact;
+  return rawResult;
 };
 
-export const deleteContact = async (contactId, userId) => {
+export const deleteContact = async ({ _id, userId }) => {
   const contact = await Contact.findOneAndDelete({
-    _id: contactId, userId: userId,
+    _id,
+    userId,
   });
   return contact;
 };

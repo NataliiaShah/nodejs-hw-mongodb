@@ -1,46 +1,42 @@
 import express from 'express';
-import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import pino from 'pino-http';
-import router from './routers/index.js';
+import { pinoHttp } from 'pino-http';
 import { getEnvVar } from './utils/getEnvVar.js';
-import { initMongoConnection } from './db/initMongoConnection.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import cookieParser from 'cookie-parser';
+import routers from './routers/index.js';
 import { UPLOAD_DIR } from './constants/index.js';
+const PORT = Number(getEnvVar('PORT', '3000'));
 
-const port = Number(getEnvVar('PORT', 3000));
-
-export async function setupServer() {
-  await initMongoConnection();
-
+const setUpServer = () => {
   const app = express();
-  app.use(
-    express.json({
-      type: ['application/json', 'application/vnd.api+json'],
-    }),
-  );
+
+  app.use(express.json());
   app.use(cors());
   app.use(cookieParser());
-
   app.use(
-    pino({
+    pinoHttp({
       transport: {
         target: 'pino-pretty',
       },
     }),
   );
 
-  app.get("/", (req, res) => {
-    res.send({ message: "Server is running" });
+  app.get('/', (req, res) => {
+    res.json({
+      message: 'Hello Mentor',
+    });
   });
 
-  app.use(router);
+  app.use(routers);
   app.use('/uploads', express.static(UPLOAD_DIR));
   app.use('*', notFoundHandler);
   app.use(errorHandler);
 
-  app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+  app.listen(PORT, () => {
+    console.log(` Server is running on port ${PORT}`);
   });
 };
+
+export default setUpServer;
