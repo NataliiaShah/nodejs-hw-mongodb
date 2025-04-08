@@ -11,6 +11,11 @@ import { SMTP } from '../constants/index.js';
 import { getEnvVar } from "../utils/getEnvVar.js";
 import { sendEmail } from "../utils/sendMail.js";
 import { createSession } from '../utils/createSession.js';
+import {
+  getFullNameFromTokenGooglePayload,
+  validateCode,
+} from '../utils/googleOAuth2.js';
+import { randomBytes } from 'node:crypto';
 
 export const registerUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
@@ -144,4 +149,30 @@ export const resetPassword = async (payload) => {
     }
     throw error;
   }
+};
+
+export const loginOrSingUpWithGoogle = async (code) => {
+  const ticket = await validateCode(code);
+
+  if (!ticket) throw createHttpError(401);
+
+  let user = await UsersCollection.findOne({ email: ticket.payload.email });
+
+  if (!user) {
+    const password = await bcrypt.hash(randomBytes(10).toString('base64'), 10);
+
+    user = await UsersCollection.create({
+      email: ticket.payload.email,
+      name: getFullNameFromTokenGooglePayload(ticket),
+      password,
+      role: 'parent',
+    });
+  }
+  const session = createSession();
+
+  await Session.deleteOne({ userId: user._id });
+  return await Session.create({
+    userId: user._id,
+    ...session,
+  });
 };
