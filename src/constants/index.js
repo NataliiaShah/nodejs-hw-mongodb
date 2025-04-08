@@ -27,6 +27,7 @@ export const CLOUDINARY = {
   API_KEY: getEnvVar ('CLOUDINARY_API_KEY'),
   API_SECRET: getEnvVar('CLOUDINARY_API_SECRET'),
 };
+export const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.yaml');
 
 
 
