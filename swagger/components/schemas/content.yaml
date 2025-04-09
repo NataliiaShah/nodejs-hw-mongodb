@@ -2,7 +2,7 @@ type: object
 required:
   - name
   - phoneNumber
-  - contactype
+  - contactType
   - userId
 properties:
   name:

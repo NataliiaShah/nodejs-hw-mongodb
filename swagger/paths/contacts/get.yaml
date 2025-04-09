@@ -57,7 +57,7 @@ responses:
               example: 200
             message:
               type: string
-              example: Successfully found students!
+              example: Successfully found contacts!
             data:
               type: object
               required:
@@ -91,6 +91,8 @@ responses:
                 previosPage:
                   type: boolean
                   example: false
+  '400':
+    $ref: '../../components/responses/400.yaml'
   '401':
     $ref: '../../components/responses/401.yaml'
   '500':

@@ -1,10 +1,15 @@
 type: object
 required:
+  - _id
   - name
   - phoneNumber
-  - contactype
+  - contactType
   - userId
 properties:
+  _id:
+    description: 'Unique identifier for the contact'
+    type: string
+    example: '65e4decdd286b30065d54af9'
   name:
     description: 'Please provide contact name'
     type: string

@@ -14,7 +14,7 @@
       "url": "http://localhost:3000"
     },
     {
-      "url": "https://nodejs-hw-mongodb-18-17pw.onrender.com"
+      "url": "https://nodejs-hw-mongodb-19-nwu2.onrender.com"
     }
   ],
   "tags": [
@@ -81,6 +81,9 @@
               }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
           "404": {
             "$ref": "#/components/responses/404"
           },
@@ -115,6 +118,9 @@
         "responses": {
           "204": {
             "description": "no content"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
           },
           "404": {
             "$ref": "#/components/responses/404"
@@ -226,6 +232,9 @@
               }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
           "404": {
             "$ref": "#/components/responses/404"
           },
@@ -326,7 +335,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully found students!"
+                      "example": "Successfully found contacts!"
                     },
                     "data": {
                       "type": "object",
@@ -405,7 +414,7 @@
                 "required": [
                   "name",
                   "phoneNumber",
-                  "contactype",
+                  "contactType",
                   "userId"
                 ],
                 "properties": {
@@ -480,6 +489,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -619,6 +631,9 @@
               }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
           "401": {
             "$ref": "#/components/responses/401"
           }
@@ -689,6 +704,9 @@
               }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
           "401": {
             "$ref": "#/components/responses/401"
           }
@@ -729,6 +747,9 @@
               }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
           "401": {
             "$ref": "#/components/responses/401"
           }
@@ -749,7 +770,7 @@
         "required": [
           "name",
           "phoneNumber",
-          "contactype",
+          "contactType",
           "userId"
         ],
         "properties": {

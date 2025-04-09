@@ -1,8 +1,13 @@
 type: object
 required:
+  - _id
   - email
   - password
+  - name
 properties:
+  _id:
+    type: string
+    example: '65e4decdd286b30065d54af9'
   email:
     type: string
     format: email
@@ -11,3 +16,7 @@ properties:
     type: string
     format: password
     example: strongPassword123
+  name:
+    type: string
+    example: 'John Doe'
+

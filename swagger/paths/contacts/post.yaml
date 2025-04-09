@@ -17,7 +17,7 @@ requestBody:
         required:
           - name
           - phoneNumber
-          - contacType
+          - contactType
         properties:
           name:
             description: 'Please provide contact name'
@@ -66,6 +66,8 @@ responses:
               example: 'Successfully created a contact!'
             data:
               $ref: '../../components/schemas/contacts.yaml'
+  '400':
+    $ref: '../../components/responses/400.yaml'
   '401':
     $ref: '../../components/responses/401.yaml'
   '500':
