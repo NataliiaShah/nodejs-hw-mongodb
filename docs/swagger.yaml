@@ -82,7 +82,32 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/400"
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                    ],
+                    "properties": {
+                      "status": {
+                        "type": "integer",
+                        "example": 400
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Invalid request parameters"
+          }
+        }
+      }
+    }
+  }
+},
+
+          "401": {
+            "$ref": "#/components/responses/401"
           },
           "404": {
             "$ref": "#/components/responses/404"
@@ -119,6 +144,31 @@
           "204": {
             "description": "no content"
           },
+          "400": {
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                    ],
+                    "properties": {
+                      "status": {
+                        "type": "integer",
+                        "example": 400
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Invalid request parameters"
+          }
+        }
+      }
+    }
+  }
+},
+
           "401": {
             "$ref": "#/components/responses/401"
           },
@@ -768,12 +818,18 @@
       "contacts": {
         "type": "object",
         "required": [
+          "_id",
           "name",
           "phoneNumber",
           "contactType",
           "userId"
         ],
         "properties": {
+          "_id": {
+            "description": "Unique identifier for the contact",
+            "type": "string",
+            "example": "65e4decdd286b30065d54af9"
+          },
           "name": {
             "description": "Please provide contact name",
             "type": "string",
@@ -822,10 +878,20 @@
       "user": {
         "type": "object",
         "required": [
+          "_id",
+          "name",
           "email",
           "password"
         ],
         "properties": {
+          "_id":{
+            "type": "string",
+            "example": '65e4decdd286b30065d54af9'
+          },
+          "name": {
+            "type": "string",
+            "example": 'John Doe'
+          },
           "email": {
             "type": "string",
             "format": "email",
