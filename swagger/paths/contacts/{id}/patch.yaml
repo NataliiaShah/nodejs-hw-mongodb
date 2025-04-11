@@ -37,7 +37,7 @@ requestBody:
             description: "Contact's email address"
             type: string
             example: 'oleh1@example.com'
-          isFavorite:
+          isFavourite:
             type: boolean
             default: false
             example: false
@@ -69,6 +69,22 @@ responses:
             data:
               type: object
               $ref: '../../../components/schemas/contacts.yaml'
+  '400':
+    description: "Invalid request parameters"
+    content:
+      application/json:
+          schema:
+            type: object
+            required:
+              - status
+              - message
+            properties:
+              status:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: "Invalid request parameters"
   '401':
     $ref: '../../../components/responses/401.yaml'
   '404':

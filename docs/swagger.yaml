@@ -235,7 +235,7 @@
                     "type": "string",
                     "example": "oleh1@example.com"
                   },
-                  "isFavorite": {
+                  "isFavourite": {
                     "type": "boolean",
                     "default": false,
                     "example": false
@@ -284,6 +284,9 @@
           },
           "400": {
             "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
           },
           "404": {
             "$ref": "#/components/responses/404"
@@ -494,7 +497,7 @@
                     "type": "string",
                     "example": "oleh1@example.com"
                   },
-                  "isFavorite": {
+                  "isFavourite": {
                     "type": "boolean",
                     "default": false,
                     "example": false
@@ -861,7 +864,7 @@
             "type": "string",
             "example": "oleh1@example.com"
           },
-          "isFavorite": {
+          "isFavourite": {
             "type": "boolean",
             "default": false,
             "example": false

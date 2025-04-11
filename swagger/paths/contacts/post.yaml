@@ -37,7 +37,7 @@ requestBody:
             description: "Contact's email address"
             type: string
             example: 'oleh1@example.com'
-          isFavorite:
+          isFavourite:
             type: boolean
             default: false
             example: false
