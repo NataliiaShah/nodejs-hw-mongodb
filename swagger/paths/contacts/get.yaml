@@ -36,7 +36,7 @@ parameters:
       enum: ['work', 'home', 'personal']
       example: personal
   - in: query
-    name: isFavorite
+    name: isFavourite
     schema:
       type: boolean
       example: true
@@ -67,7 +67,7 @@ responses:
                 - totalItems
                 - totalPages
                 - nextPage
-                - previosPage
+                - previousPage
               properties:
                 data:
                   type: array
@@ -88,7 +88,7 @@ responses:
                 nextPage:
                   type: boolean
                   example: true
-                previosPage:
+                previousPage:
                   type: boolean
                   example: false
   '400':

@@ -362,7 +362,7 @@
           },
           {
             "in": "query",
-            "name": "isFavorite",
+            "name": "isFavourite",
             "schema": {
               "type": "boolean",
               "example": true
@@ -399,7 +399,7 @@
                         "totalItems",
                         "totalPages",
                         "nextPage",
-                        "previosPage"
+                        "previousPage"
                       ],
                       "properties": {
                         "data": {
@@ -428,7 +428,7 @@
                           "type": "boolean",
                           "example": true
                         },
-                        "previosPage": {
+                        "previousPage": {
                           "type": "boolean",
                           "example": false
                         }
@@ -563,11 +563,7 @@
         "summary": "register a new user",
         "description": "Creates a new user with email and password",
         "operationId": "registerUser",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security":[],
         "requestBody": {
           "required": true,
           "content": {
@@ -632,11 +628,7 @@
         "summary": "login user",
         "description": "Authenticates user and returns tokens",
         "operationId": "loginUser",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
