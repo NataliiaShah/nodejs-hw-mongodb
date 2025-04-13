@@ -2,12 +2,12 @@
   "openapi": "3.1.0",
   "info": {
     "version": "1.0.0",
-    "title": "Contacts app",
+    "title": "Contacts",
+    "description": "This is a documentation of contacts app",
     "license": {
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-    },
-    "description": "This is a documentation of students app"
+    }
   },
   "servers": [
     {
@@ -20,7 +20,7 @@
   "tags": [
     {
       "name": "Contacts",
-      "description": "Operations about users."
+      "description": "Operations about contacts."
     },
     {
       "name": "Auth",
@@ -48,7 +48,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "65e4decdd286b30065d54af9"
+              "example": "65ca67e7ae7f10c88b598384"
             }
           }
         ],
@@ -81,31 +81,6 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid request parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "message"
-                    ],
-                    "properties": {
-                      "status": {
-                        "type": "integer",
-                        "example": 400
-                        },
-                        "message": {
-                          "type": "string",
-                          "example": "Invalid request parameters"
-          }
-        }
-      }
-    }
-  }
-},
-
           "401": {
             "$ref": "#/components/responses/401"
           },
@@ -136,7 +111,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "65e4decdd286b30065d54af9"
+              "example": "65ca67e7ae7f10c88b598384"
             }
           }
         ],
@@ -144,31 +119,6 @@
           "204": {
             "description": "no content"
           },
-          "400": {
-            "description": "Invalid request parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "required": [
-                    "status",
-                    "message"
-                    ],
-                    "properties": {
-                      "status": {
-                        "type": "integer",
-                        "example": 400
-                        },
-                        "message": {
-                          "type": "string",
-                          "example": "Invalid request parameters"
-          }
-        }
-      }
-    }
-  }
-},
-
           "401": {
             "$ref": "#/components/responses/401"
           },
@@ -199,7 +149,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "example": "65e4decdd286b30065d54af9"
+              "example": "65ca67e7ae7f10c88b598384"
             }
           }
         ],
@@ -212,7 +162,7 @@
                   "name": {
                     "description": "Please provide contact name",
                     "type": "string",
-                    "example": "Ivan Ivanenko"
+                    "example": "Petro Zagora"
                   },
                   "phoneNumber": {
                     "description": "Please provide phoneNumber",
@@ -283,7 +233,28 @@
             }
           },
           "400": {
-            "$ref": "#/components/responses/400"
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid request parameters"
+                    }
+                  }
+                }
+              }
+            }
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -439,6 +410,9 @@
               }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
           "401": {
             "$ref": "#/components/responses/401"
           },
@@ -452,7 +426,7 @@
           "Contacts"
         ],
         "summary": "create new contact",
-        "description": "Creates a new contact in the database. Required fields depend on the contact schema. The contact can belong to categories like \"work\", \"personal\", or \"home\". Can optionally include a photo.",
+        "description": "Creates a new contact in the database. Required fields depend on the contact schema. The contact can belong to categories like \"work\", \"personal\", or \"home\". Can optionally include a photo.\n",
         "operationId": "postContact",
         "security": [
           {
@@ -467,19 +441,18 @@
                 "required": [
                   "name",
                   "phoneNumber",
-                  "contactType",
-                  "userId"
+                  "contactType"
                 ],
                 "properties": {
                   "name": {
                     "description": "Please provide contact name",
                     "type": "string",
-                    "example": "Ivan Ivanenko"
+                    "example": "Petro Zagora"
                   },
                   "phoneNumber": {
                     "description": "Please provide phoneNumber",
                     "type": "string",
-                    "example": "+380000000009"
+                    "example": "+380000000002"
                   },
                   "contactType": {
                     "description": "Select one of the types",
@@ -505,9 +478,7 @@
                   "photo": {
                     "description": "Link to contact's photo",
                     "type": "string",
-                    "format": "binary",
-                    "default": null,
-                    "example": "https://res.cloudinary.com/dxrovat3s/image/upload/v1743504692/kv9oj0gluxspmqpulvgg.jpg"
+                    "format": "binary"
                   }
                 }
               }
@@ -563,7 +534,11 @@
         "summary": "register a new user",
         "description": "Creates a new user with email and password",
         "operationId": "registerUser",
-        "security":[],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -628,7 +603,11 @@
         "summary": "login user",
         "description": "Authenticates user and returns tokens",
         "operationId": "loginUser",
-        "security": [],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -792,9 +771,6 @@
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/400"
-          },
           "401": {
             "$ref": "#/components/responses/401"
           }
@@ -873,19 +849,14 @@
       "user": {
         "type": "object",
         "required": [
-          "_id",
-          "name",
           "email",
-          "password"
+          "password",
+          "name"
         ],
         "properties": {
-          "_id":{
+          "_id": {
             "type": "string",
-            "example": '65e4decdd286b30065d54af9'
-          },
-          "name": {
-            "type": "string",
-            "example": 'John Doe'
+            "example": "65e4decdd286b30065d54af9"
           },
           "email": {
             "type": "string",
@@ -896,6 +867,10 @@
             "type": "string",
             "format": "password",
             "example": "strongPassword123"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe"
           }
         }
       }

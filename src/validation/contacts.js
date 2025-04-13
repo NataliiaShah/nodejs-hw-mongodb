@@ -6,6 +6,7 @@ const baseShema = Joi.object({
   email: Joi.string().email(),
   isFavourite: Joi.boolean(),
   contactType: Joi.string().valid('work', 'home', 'personal'),
+  photo: Joi.string().optional(),
 });
 
 export const createValidationShema = baseShema.fork(
