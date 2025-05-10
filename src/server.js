@@ -1,32 +1,46 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import pino from "pino";
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import pino from 'pino-http';
+import router from './routers/index.js';
+import { getEnvVar } from './utils/getEnvVar.js';
+import { initMongoConnection } from './db/initMongoConnection.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
-dotenv.config();
-const logger = pino();
-const app = express();
-const port = process.env.PORT;
-app.use(cors());
+const port = Number(getEnvVar('PORT', 3000));
 
-export function setupServer() {
-    app.use((req, res, next) => {
-    logger.info(`Request made to ${req.originalUrl}`);
-    next();
-});
+export async function setupServer() {
+  await initMongoConnection();
 
-app.get("/", (req, res) => {
+  const app = express();
+  app.use(
+    express.json({
+      type: ['application/json', 'application/vnd.api+json'],
+    }),
+  );
+  app.use(cors());
+  app.use(cookieParser());
+
+  app.use(
+    pino({
+      transport: {
+        target: 'pino-pretty',
+      },
+    }),
+  );
+
+  app.get("/", (req, res) => {
     res.send({ message: "Server is running" });
-});
+  });
 
-app.use((req, res) => {
-    res.status(404).send({
-        message: 'Not found',
-    });
-});
+  app.use(router);
+  app.use('*', notFoundHandler);
+  app.use(errorHandler);
 
-    app.listen(port, () => {
-        logger.info(`Server is running on port ${port}`);
-    });
-
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
 };
+
+
